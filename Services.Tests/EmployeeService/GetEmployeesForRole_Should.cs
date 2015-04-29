@@ -33,24 +33,35 @@ namespace Services.Tests
 
         [Test]
         public void Return_List_Of_Three_Employees_With_Assigned_Role()
-        {
-        
+        {        
             //Assign
-            int roleId = 1;
-            _unitOfWork.Setup(w => w.Employee.Find(It.Is())).Returns(GetEmployeeList());
+            _unitOfWork.Setup(w => w.Employee.Find(It.IsAny<Expression<Func<Employee, bool>>>())).Returns(GetEmployeeList());
 
             //Act
-            var result = _employeeService.GetEmployeesForRole(roleId);
+            var result = _employeeService.GetEmployeesForRole(1);
 
             //Asserts
             Assert.AreEqual(3, result.Count);
-//            Assert.AreEqual("Employee Order 1", );
+            Assert.AreEqual("Employee Order 1", result[0].Name); // first row
+            Assert.AreEqual("Employee Order 3", result[2].Name); // last row
         }
 
         [Test]
         public void Return_Empty_List_With_Unassigned_Role()
         {
+            //Assign
+            _unitOfWork.Setup(w => w.Employee.Find(It.IsAny<Expression<Func<Employee, bool>>>())).Returns(GetEmptyEmployeeList());
 
+            //Act
+            var result = _employeeService.GetEmployeesForRole(2);
+
+            //Asserts
+            Assert.AreEqual(0, result.Count);
+        }
+
+        private IEnumerable<Employee> GetEmptyEmployeeList()
+        {
+            return new List<Employee>();
         }
 
         private IEnumerable<Employee> GetEmployeeList()
@@ -76,23 +87,6 @@ namespace Services.Tests
                 },
                 new Employee
                 {
-                    Name = "Employee In Role 2",
-                    Salaries = new Collection<Salary>
-                    {
-                        new Salary
-                        {
-                            AnnualAmount = 10000,
-                            Currency = new Currency
-                            {
-                                Unit = "USD",
-                                ConversionFactor = (decimal) 1.54
-                            }
-                        }
-                    },
-                    RoleId = 2
-                },
-                new Employee
-                {
                     Name = "Employee Order 1",
                     Salaries = new Collection<Salary>
                     {
@@ -115,7 +109,7 @@ namespace Services.Tests
                     {
                         new Salary
                         {
-                            AnnualAmount = 1134,
+                            AnnualAmount = 11134,
                             Currency = new Currency
                             {
                                 Unit = "USD",

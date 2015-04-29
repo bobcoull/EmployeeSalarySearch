@@ -37,26 +37,7 @@ namespace Services
 
                 if (employee != null)
                 {
-                    string currencyUnit = "";
-                    double gbpSalary = 0;
-                    double localCurrencySalary = 0;
-
-                    var salary = employee.Salaries.FirstOrDefault();
-                    if (salary != null)
-                    {
-                        currencyUnit = salary.Currency.Unit;
-                        gbpSalary = Math.Round((double)(salary.AnnualAmount / salary.Currency.ConversionFactor), 2);
-                        localCurrencySalary = salary.AnnualAmount;
-                    }
-
-                    return new EmployeeSalary
-                    {
-                        Id = employee.Id,
-                        Name = employee.Name,
-                        CurrencyUnit = currencyUnit,
-                        GbpSalary = gbpSalary,
-                        LocalCurrencySalary = localCurrencySalary
-                    };
+                    return MapEmployeeToEmployeeSalary(employee);
                 }
                 return null;
             
@@ -73,32 +54,36 @@ namespace Services
 
                 foreach (var employee in employees)
                 {
-                    string currencyUnit = "";
-                    double gbpSalary = 0;
-                    double localCurrencySalary = 0;
-
-                    var salary = employee.Salaries.FirstOrDefault();
-                    if (salary != null)
-                    {
-                        currencyUnit = salary.Currency.Unit;
-                        gbpSalary = Math.Round((double)(salary.AnnualAmount / salary.Currency.ConversionFactor), 2);
-                        localCurrencySalary = salary.AnnualAmount;
-                    }
-
-                    employeeSalaries.Add(                    
-                        new EmployeeSalary
-                        {
-                            Id = employee.Id,
-                            Name = employee.Name,
-                            CurrencyUnit = currencyUnit,
-                            GbpSalary = gbpSalary,
-                            LocalCurrencySalary = localCurrencySalary
-                        }
-                   );
-                    
+                    employeeSalaries.Add(MapEmployeeToEmployeeSalary(employee));                    
                 }
                 return employeeSalaries.OrderByDescending(e => e.GbpSalary).ToList();
             }
         }
+
+
+        private EmployeeSalary MapEmployeeToEmployeeSalary(Employee employee)
+        {
+            string currencyUnit = "";
+            double gbpSalary = 0;
+            double localCurrencySalary = 0;
+
+            var salary = employee.Salaries.FirstOrDefault();
+            if (salary != null)
+            {
+                currencyUnit = salary.Currency.Unit;
+                gbpSalary = Math.Round((double)(salary.AnnualAmount / salary.Currency.ConversionFactor), 2);
+                localCurrencySalary = salary.AnnualAmount;
+            }
+
+            return new EmployeeSalary
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                CurrencyUnit = currencyUnit,
+                GbpSalary = gbpSalary,
+                LocalCurrencySalary = localCurrencySalary
+            };
+        }
+    
     }
 }
