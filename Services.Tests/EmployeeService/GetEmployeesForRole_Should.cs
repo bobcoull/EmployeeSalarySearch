@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Data;
 using Moq;
 using NUnit.Framework;
@@ -13,6 +11,7 @@ using NUnit.Framework;
 namespace Services.Tests
 {
     [TestFixture]
+    // ReSharper disable once InconsistentNaming
     public class GetEmployeesForRole_Should
     {
 
@@ -59,14 +58,15 @@ namespace Services.Tests
             Assert.AreEqual(0, result.Count);
         }
 
-        private IEnumerable<Employee> GetEmptyEmployeeList()
+        private IQueryable<Employee> GetEmptyEmployeeList()
         {
-            return new List<Employee>();
+            var employees = new List<Employee>();
+            return employees.AsQueryable();
         }
 
-        private IEnumerable<Employee> GetEmployeeList()
+        private IQueryable<Employee> GetEmployeeList()
         {
-            return new List<Employee>
+            var employees =  new List<Employee>
             {
                 new Employee
                 {
@@ -120,6 +120,7 @@ namespace Services.Tests
                     RoleId = 1 
                 }
             };
+            return employees.AsQueryable();
         }
 
     }

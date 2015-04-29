@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 
 // ReSharper disable once CheckNamespace
@@ -9,8 +10,8 @@ namespace Data
     {
         //        IQueryable<TEntity> AsQueryable();
 
-        IEnumerable<TEntity> GetAll();
-        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
+        IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         //        TEntity Single(Expression<Func<TEntity, bool>> predicate);
         //        TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate);
         //        TEntity First(Expression<Func<TEntity, bool>> predicate);

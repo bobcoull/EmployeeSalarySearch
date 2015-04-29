@@ -19,12 +19,12 @@ namespace Data.Repositories
         }
 
 
-        public IEnumerable<Employee> GetAll()
+        public IQueryable<Employee> GetAll()
         {
             return _employeeContext.Employee;
         }
 
-        public IEnumerable<Employee> Find(Expression<Func<Employee, bool>> predicate)
+        public IQueryable<Employee> Find(Expression<Func<Employee, bool>> predicate)
         {
             return _employeeContext.Employee.Where(predicate);
         }

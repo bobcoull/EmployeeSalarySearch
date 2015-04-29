@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Data;
 using Data.Repositories;
 using Moq;
@@ -58,9 +59,9 @@ namespace Services.Tests
         }
 
 
-        private IEnumerable<Employee> GetEmployeeList()
+        private IQueryable<Employee> GetEmployeeList()
         {
-            return new List<Employee>
+            var employees = new List<Employee>
             {
                 new Employee
                 {
@@ -87,8 +88,8 @@ namespace Services.Tests
                     Name = "Another Employee Two"
                 }
             };
+            return employees.AsQueryable();
         }
-
 
     }
 }
